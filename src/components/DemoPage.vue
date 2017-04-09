@@ -28,7 +28,6 @@
       @requestitem:select='showRequest' >
       </request-item>
 
-
       <strong>Server errors (5xx)</strong>
       <request-item
         v-for='req in serverErrorRequests'

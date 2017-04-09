@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { GET, POST, PUT, PATCH, DELETE, RETRY } from '../actions'
 /* eslint-disable no-useless-computed-key */
 export default {
@@ -8,11 +9,13 @@ export default {
   mutations: {
     ['UPDATE_REQUEST'] (state, request) {
       let index = state.index[request.id]
-      state.requests[index] = request
+      Vue.set(state.requests, index, request)
     },
     ['PUSH_REQUEST'] (state, request) {
       state.requests.push(request)
-      state.index[request.id] = (state.requests.length - 1)
+      let index = (state.requests.length - 1)
+      Vue.set(state.index, request.id, request, index)
+      // state.index[request.id] = (state.requests.length - 1)
     },
     ['REMOVE_REQUEST'] (state, requestId) {
       console.log(`remove request: ${requestId}`)
