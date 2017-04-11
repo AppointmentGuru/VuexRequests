@@ -21,34 +21,38 @@
         <h3>Code for this example:</h3>
 
 <pre v-highlightjs><code class="JavaScript">
+const GET_USERS_REQUEST = 'get_users_request'
+
 export default {
   name: 'RandomUserPage',
   mounted () {
-    let req = {
-      url: 'https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb',
-      id: GET_USERS_REQUEST
-    }
-    this.$requeststore.dispatch('GET', req)
+    this.fetch()
   },
   computed: {
-    randomUserRequest () {
-      let req = this.$requeststore
-                  .getters
-                    .getRequestById(GET_USERS_REQUEST)
-      if (req !== -1) {
+    request () {
+      let req = this.$requeststore.getters.getRequestById(GET_USERS_REQUEST)
+      let requestExists = (req !== -1)
+      if (requestExists) {
         return req
-      } else {
-        return { data: { results: [] } }
+      } else { // if no request exists. return a blank mock
+        return { result: { data: { results: [[]] } } }
       }
     },
     users () {
-      return this.randomUserRequest.result
+      if (this.request) { return this.request.result.data.results[0] }
+      return []
     },
     usersLoading () {
-      return this.randomUserRequest.loading
+      if (this.request) { return this.request.loading }
+      return false
     }
   },
   methods: {
+    fetch () {
+      let url = 'https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb'
+      let req = { url: url, id: GET_USERS_REQUEST }
+      this.$requeststore.dispatch('GET', req)
+    },
     retry () {
       this.$requeststore.dispatch('RETRY', GET_USERS_REQUEST)
     }
@@ -66,37 +70,33 @@ const GET_USERS_REQUEST = 'get_users_request'
 export default {
   name: 'RandomUserPage',
   mounted () {
-    let req = {
-      url: 'https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb',
-      id: GET_USERS_REQUEST
-    }
-    this.$requeststore.dispatch('GET', req)
+    this.fetch()
   },
   computed: {
-    randomUserRequest () {
-      let req = this.$requeststore
-                  .getters
-                    .getRequestById(GET_USERS_REQUEST)
-      if (req !== -1) {
+    request () {
+      let req = this.$requeststore.getters.getRequestById(GET_USERS_REQUEST)
+      let requestExists = (req !== -1)
+      if (requestExists) {
         return req
-      } else {
-        return { result: { data: { results: [] } } }
+      } else { // if no request exists. return a blank mock
+        return { result: { data: { results: [[]] } } }
       }
     },
     users () {
-      if (this.randomUserRequest) {
-        return this.randomUserRequest.result.data.results[0]
-      }
+      if (this.request) { return this.request.result.data.results[0] }
       return []
     },
     usersLoading () {
-      if (this.randomUserRequest) {
-        return this.randomUserRequest.loading
-      }
+      if (this.request) { return this.request.loading }
       return false
     }
   },
   methods: {
+    fetch () {
+      let url = 'https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb'
+      let req = { url: url, id: GET_USERS_REQUEST }
+      this.$requeststore.dispatch('GET', req)
+    },
     retry () {
       this.$requeststore.dispatch('RETRY', GET_USERS_REQUEST)
     }

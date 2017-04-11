@@ -11,10 +11,12 @@ Vue.use(VueRouter)
 
 import DemoPage from './components/DemoPage'
 import RandomUserPage from './components/examples/RandomUserPage'
+import GithubCRUDPage from './components/examples/GithubCRUDPage'
+
 const routes = [
   { path: '/', component: DemoPage },
-  { path: '/randomuser', component: RandomUserPage }
-  // { path: '/github', component: Bar }
+  { path: '/randomuser', component: RandomUserPage },
+  { path: '/github', component: GithubCRUDPage }
 ]
 
 const router = new VueRouter({ routes })

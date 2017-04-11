@@ -18,7 +18,7 @@
             <router-link to='/randomuser' class="nav-link" href="#">Get Example</router-link>
           </li>
           <li class="nav-item active">
-            <router-link to='/' class="nav-link" href="#">CRUD Example</router-link>
+            <router-link to='/github' class="nav-link" href="#">CRUD Example</router-link>
           </li>
         </ul>
       </div>
