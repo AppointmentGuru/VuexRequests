@@ -4,12 +4,24 @@
   <blockquote>Create, edit and delete Github Repos</blockquote>
   <hr/>
   <div class='row' >
-    <div class='col-md-12 '>
+    <div class='col '>
       <form class="m-md p-md" >
         <label for="inlineFormInput">Server response status:</label>
         <input v-model='token' type="text" class="form-control " >
         <button class='btn' @click='fetch' >Get Repos [{{reposLoading}}]</button>
       </form>
+    </div>
+    <div class='col' >
+      <div v-show='activeRequests && activeRequests.length > 0' >
+        <h5>Active Requests</h5>
+        <pre v-for='req in activeRequests' >
+          url: {{req.url}}
+          medod: {{req.method}}
+          loading: {{req.loading}}
+          modified: {{req.modified}}
+          status: {{req.result.status}}
+        </pre>
+      </div>
     </div>
   </div>
   <!-- /. row -->
@@ -137,6 +149,9 @@ export default {
     },
     reposLoading () {
       return this.getResponseKey(GET_REPOS, 'loading', false)
+    },
+    activeRequests () {
+      return this.$requeststore.getters.getInProgressRequests
     }
   }
 }

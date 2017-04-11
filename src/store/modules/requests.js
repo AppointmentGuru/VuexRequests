@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import { GET, POST, PUT, PATCH, DELETE, RETRY } from '../actions'
 /* eslint-disable no-useless-computed-key */
+
+/*
+ if there's an error:
+ 500 -> retry
+ 400 -> edit and retry
+ */
+
 export default {
   state: {
     requests: [],

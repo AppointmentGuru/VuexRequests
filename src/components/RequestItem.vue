@@ -1,17 +1,7 @@
-<style scoped >
-.avatar {
-  width: 50px;
-  height: 50px;
-  padding: 5px;
-  line-height: 40px;
-  display:block;
-  float:left;
-}
-</style>
 <template>
 <div class="card">
   <div class="card-block">
-    <span class="avatar bg-success text-white rounded-circle pull-left">
+    <span class="badge badge-info ">
       {{request.result.status}}
     </span>{{request.id}}
     <hr/>
