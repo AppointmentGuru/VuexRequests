@@ -106,7 +106,7 @@ export default {
   mixins: [Mixins],
   data () {
     return {
-      token: 'df481b5f6d201ea7f45d2383e8ab0af28bc60bfb',
+      token: '',
       repoName: '',
       selectedRepo: {}
     }
@@ -140,6 +140,5 @@ export default {
     }
   }
 }
-// curl -v -H "Authorization: token ed0d68f4b3a1aea8b89bf76b38d82f7d66302513" https://api.github.com/user/repos
 </script>
 
