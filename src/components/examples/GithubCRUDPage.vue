@@ -49,6 +49,7 @@
 </div>
 </template>
 <script>
+import Mixins from '@/store/mixins'
 const GET_REPOS = 'GET_REPOS'
 const GET_REPO = 'GET_REPO'
 const CREATE_REPO = 'CREATE_REPO'
@@ -100,24 +101,12 @@ const GITHUB_API = {
   }
 }
 
-let VuexRequestMixin = {
-  getResultKey (store, id, key, defaultResult) {
-    let r = store.getters.getRequestById(id)
-    if (r && r !== -1) { return r.result[key] }
-    return defaultResult
-  },
-  getKey (store, id, key, defaultResult) {
-    let r = store.getters.getRequestById(id)
-    if (r && r !== -1) { return r[key] }
-    return defaultResult
-  }
-}
-
 export default {
   name: 'GithubCRUDPage',
+  mixins: [Mixins],
   data () {
     return {
-      token: 'ed0d68f4b3a1aea8b89bf76b38d82f7d66302513',
+      token: 'df481b5f6d201ea7f45d2383e8ab0af28bc60bfb',
       repoName: '',
       selectedRepo: {}
     }
@@ -141,13 +130,13 @@ export default {
   },
   computed: {
     repos () {
-      return VuexRequestMixin.getResultKey(this.$requeststore, GET_REPOS, 'data', [])
+      return this.getResultKey(GET_REPOS, 'data', [])
     },
     reposChanged () {
-      return VuexRequestMixin.getKey(this.$requeststore, GET_REPOS, 'modified', 0)
+      return this.getResponseKey(GET_REPOS, 'modified', 0)
     },
     reposLoading () {
-      return VuexRequestMixin.getKey(this.$requeststore, GET_REPOS, 'loading', false)
+      return this.getResponseKey(GET_REPOS, 'loading', false)
     }
   }
 }

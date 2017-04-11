@@ -14,7 +14,7 @@ export default {
     ['PUSH_REQUEST'] (state, request) {
       state.requests.push(request)
       let index = (state.requests.length - 1)
-      Vue.set(state.index, request.id, request, index)
+      Vue.set(state.index, request.id, index)
       // state.index[request.id] = (state.requests.length - 1)
     },
     ['REMOVE_REQUEST'] (state, requestId) {

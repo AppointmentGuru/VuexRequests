@@ -1,22 +1,25 @@
-import moment from 'moment'
-
 export default {
   methods: {
-    gStoreGetAppointmentById (appointments, id) {
-      return appointments.find((item) => {
-        return item.id === id
-      })
+    getRequestById (id) {
+      if (id) {
+        console.log(id)
+        let state = this.$requeststore.state.requests
+        if (id in state.index) {
+          let index = state.index[id]
+          return state.requests[index]
+        }
+      }
+      return -1
     },
-    gStoreGetAppointmentsByStatus (appointments, statuses) {
-      return appointments.filter((item) => {
-        return statuses.indexOf(item.status) !== -1
-      })
+    getResultKey (id, key, defaultResult) {
+      let r = this.getRequestById(id)
+      if (r && r !== -1) { return r.result[key] }
+      return defaultResult
     },
-    gStoreGetAppointmentsByDay (appointments, day) {
-      return appointments.filter((item) => {
-        let appDay = moment(item.start_time).format('YYYY-MM-DD')
-        return appDay === day
-      })
+    getResponseKey (id, key, defaultResult) {
+      let r = this.getRequestById(id)
+      if (r && r !== -1) { return r[key] }
+      return defaultResult
     }
   }
 }

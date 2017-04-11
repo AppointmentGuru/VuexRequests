@@ -66,15 +66,17 @@ export default {
 </template>
 <script>
 const GET_USERS_REQUEST = 'get_users_request'
+import Mixins from '@/store/mixins'
 
 export default {
   name: 'RandomUserPage',
+  mixins: [Mixins],
   mounted () {
     this.fetch()
   },
   computed: {
     request () {
-      let req = this.$requeststore.getters.getRequestById(GET_USERS_REQUEST)
+      let req = this.getRequestById(GET_USERS_REQUEST)
       let requestExists = (req !== -1)
       if (requestExists) {
         return req
@@ -83,7 +85,12 @@ export default {
       }
     },
     users () {
-      if (this.request) { return this.request.result.data.results[0] }
+      try {
+        if (this.request) { return this.request.result.data.results[0] }
+      } catch (err) {
+        console.log(err)
+      }
+
       return []
     },
     usersLoading () {
