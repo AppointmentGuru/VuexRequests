@@ -27,18 +27,35 @@ function prepareRequest (method, request) {
   request.result = { status: 0 }
   request.method = method
   request.loading = true
+  request.modified = new Date().getTime()
   return request
 }
 function makeRequest (commit, getters, request) {
   let isNewRequest = (getters.getRequestById(request.id) === -1)
-  if (isNewRequest) { commit('PUSH_REQUEST', request) }
-  return http[request.method](request.url)
+  if (isNewRequest) {
+    commit('PUSH_REQUEST', request)
+  } else {
+    commit('UPDATE_REQUEST', request)
+  }
+
+  let writeRequests = ['post', 'put', 'patch']
+  let isWriteRequest = (writeRequests.indexOf(request.method) !== -1)
+  let promise = null
+  if (isWriteRequest) {
+    promise = http[request.method](request.url, request.data, request)
+  } else {
+    promise = http[request.method](request.url, request)
+  }
+
+  return promise
     .then((result) => {
+      request.modified = new Date().getTime()
       request.loading = false
       request.result = result
       commit('UPDATE_REQUEST', request)
     })
     .catch((error) => {
+      request.modified = new Date().getTime()
       request.loading = false
       if (error.response) {
         request.result = error.response
@@ -64,20 +81,22 @@ export const GET = ({ commit, getters }, request) => {
 
 export const POST = ({ commit, getters }, request) => {
   request = prepareRequest('post', request)
-  commit('PUSH_REQUEST', request)
   return makeRequest(commit, getters, request)
 }
 
-export const PUT = ({ commit }) => {
-  console.log('PUT')
+export const PUT = ({ commit, getters }, request) => {
+  request = prepareRequest('put', request)
+  return makeRequest(commit, getters, request)
 }
 
-export const PATCH = ({ commit }) => {
-  console.log('PATCH')
+export const PATCH = ({ commit, getters }, request) => {
+  request = prepareRequest('patch', request)
+  return makeRequest(commit, getters, request)
 }
 
-export const DELETE = ({ commit }) => {
-  console.log('DELETE')
+export const DELETE = ({ commit, getters }, request) => {
+  request = prepareRequest('delete', request)
+  return makeRequest(commit, getters, request)
 }
 
 export const RETRY = ({ getters, commit }, requestId) => {
