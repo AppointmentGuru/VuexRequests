@@ -81,22 +81,26 @@ export const GET = ({ commit, getters }, request) => {
 
 export const POST = ({ commit, getters }, request) => {
   request = prepareRequest('post', request)
-  return makeRequest(commit, getters, request)
+  makeRequest(commit, getters, request)
+  return request.id
 }
 
 export const PUT = ({ commit, getters }, request) => {
   request = prepareRequest('put', request)
-  return makeRequest(commit, getters, request)
+  makeRequest(commit, getters, request)
+  return request.id
 }
 
 export const PATCH = ({ commit, getters }, request) => {
   request = prepareRequest('patch', request)
-  return makeRequest(commit, getters, request)
+  makeRequest(commit, getters, request)
+  return request.id
 }
 
 export const DELETE = ({ commit, getters }, request) => {
   request = prepareRequest('delete', request)
-  return makeRequest(commit, getters, request)
+  makeRequest(commit, getters, request)
+  return request.id
 }
 
 export const RETRY = ({ getters, commit }, requestId) => {
@@ -105,7 +109,7 @@ export const RETRY = ({ getters, commit }, requestId) => {
     request.result.status = 0  // retrying / in progress
     request.loading = true
     commit('UPDATE_REQUEST', request)
-    return makeRequest(commit, getters, request)
+    makeRequest(commit, getters, request)
   }
 }
 

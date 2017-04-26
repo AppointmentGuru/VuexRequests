@@ -33,6 +33,17 @@ let req = {
 let id = this.$requeststore.dispatch('GET', req)
 ```
 
+## Backends
+
+VuexRequests comes with some predefined backends which make it easy for you to interact with various APIs.
+
+
+### Using backends
+
+You can also define your own backends.
+
+#### Creating a custom
+
 ## Develop / contribute
 
 ``` bash

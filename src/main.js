@@ -6,17 +6,25 @@ import App from './App'
 import store from './store/plugin'
 Vue.config.productionTip = false
 
-Vue.use(store)
+import AppointmentGuruBackend from './store/backends/appointmentguru'
+let backends = [{
+  name: 'appointmentguru',
+  class: AppointmentGuruBackend
+}]
+Vue.use(store, backends)
+
 Vue.use(VueRouter)
 
 import DemoPage from './components/DemoPage'
 import RandomUserPage from './components/examples/RandomUserPage'
 import GithubCRUDPage from './components/examples/GithubCRUDPage'
+import BackendPage from './components/examples/BackendPage'
 
 const routes = [
   { path: '/', component: DemoPage },
   { path: '/randomuser', component: RandomUserPage },
-  { path: '/github', component: GithubCRUDPage }
+  { path: '/github', component: GithubCRUDPage },
+  { path: '/backendexample', component: BackendPage }
 ]
 
 const router = new VueRouter({ routes })

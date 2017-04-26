@@ -20,6 +20,9 @@
           <li class="nav-item active">
             <router-link to='/github' class="nav-link" href="#">CRUD Example</router-link>
           </li>
+          <li class="nav-item active">
+            <router-link to='/backendexample' class="nav-link" href="#">Backend example</router-link>
+          </li>
         </ul>
       </div>
     </nav>
