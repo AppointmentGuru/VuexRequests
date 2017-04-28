@@ -4,16 +4,37 @@ class Resource {
   constructor (url) {
     this.url = url
   }
-  get (id, params = {}) {
-    let req = { url: `${this.url}/${id}`, params: params }
-    return store.dispatch('GET', req)
+  __getRequest (url, options) {
+    let req = {url: url}
+    if (this.id) { req.id = this.id }
+    Object.assign(req, options)
+    return req
+  }
+  __detailUrl (id) {
+    return `${this.url}/${id}`
+  }
+  id (id) {
+    this.id = id
+    return this
   }
   list (params = {}) {
-    let req = { url: this.url, params: params }
+    let req = this.__getRequest(this.url, {params})
     return store.dispatch('GET', req)
   }
-  save (data) {}
-  update (data) {}
+  create (data, tags = []) {
+    let req = this.__getRequest(this.url, {data, tags})
+    return store.dispatch('POST', req)
+  }
+  get (id, params = {}) {
+    let url = this.__detailUrl(id)
+    let req = this.__getRequest(url, {params})
+    return store.dispatch('GET', req)
+  }
+  save (id, data, tags = []) {
+    let url = this.__detailUrl(id)
+    let req = this.__getRequest(url, {data, tags})
+    return store.dispatch('PATCH', req)
+  }
   cancel (requestId) {}
   retry (requestId) {}
 }
@@ -35,6 +56,7 @@ export default class API {
       url: this.endpoints()[name].url,
       method: method
     }
+    if (this.id) { req.id = this.id }
     Object.assign(req, options)
     return store.dispatch(method.toUpperCase(), req)
   }

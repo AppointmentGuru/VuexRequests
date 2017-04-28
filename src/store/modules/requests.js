@@ -40,6 +40,11 @@ export default {
         return -1
       }
     },
+    getRequestsByTag: (state, getters) => (tag) => {
+      return state.requests.filter((req) => {
+        return (req.tags && req.tags.indexOf(tag) !== -1)
+      })
+    },
     totalRequestCount: (state) => {
       return Object.keys(state.requests).length
     },

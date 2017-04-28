@@ -1,37 +1,53 @@
+<style>
+body{
+  margin:0px;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;;
+  color: #5e6d82;
+}
+h1,h2,h3,h4,h5 { color: #1F2D3D; font-weight: 400; }
+pre {
+  color:white;
+  background-color: #324057;
+  padding: 10px;
+}
+</style>
 <template>
-  <div id="app">
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="#">VuexRequests</a>
+<div id="app">
+  <el-menu
+    theme="light"
+    mode="horizontal" >
+    <el-menu-item index="1">Processing Center</el-menu-item>
+  </el-menu>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <router-link to='/' class="nav-link" href="#">Demo</router-link>
-          </li>
-          <li class="nav-item active">
-            <router-link to='/randomuser' class="nav-link" href="#">Get Example</router-link>
-          </li>
-          <li class="nav-item active">
-            <router-link to='/github' class="nav-link" href="#">CRUD Example</router-link>
-          </li>
-          <li class="nav-item active">
-            <router-link to='/backendexample' class="nav-link" href="#">Backend example</router-link>
-          </li>
-        </ul>
+  <el-row >
+    <el-col :md='6' >
+    <el-menu theme='dark' :router='true' >
+      <el-menu-item
+        v-for='route in routes'
+        :key='route.path'
+        :index='route.path' >{{route.name}}</el-menu-item>
+    </el-menu>
+    </el-col>
+    <el-col :md='18' >
+      <div style='margin:20px;' >
+        <router-view></router-view>
       </div>
-    </nav>
-    <router-view></router-view>
-  </div>
+    </el-col>
+  </el-row>
+</div>
 </template>
 
 <script>
+import routes from './routes'
+
 export default {
-  name: 'app'
+  routes,
+  name: 'app',
+  data () {
+    return {
+      routes: routes
+    }
+  }
 }
 </script>
+

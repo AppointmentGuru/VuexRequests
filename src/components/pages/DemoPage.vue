@@ -7,16 +7,17 @@
       <button class='btn' @click='createRequest' >Create request</button>
     </form>
   </div>
-  <hr/>
-  <div class="row">
-    <div class="col">
+  <div class='line' ></div>
+  <el-row >
+    <el-col :md='8' >
+
       <h5>In progress</h5>
       <template v-for='req in inprogressRequests' >
         <request-item :request='req' ></request-item>
         <button @click='retry(req.id)' >Cancel</button>
       </template>
-    </div>
-    <div class="col">
+    </el-col>
+    <el-col :md='8' >
       <h5>Error requests</h5>
 
       <strong>Client errors (4xx)</strong>
@@ -37,9 +38,8 @@
         @requestitem:select='showRequest' >
       </request-item>
 
-    </div>
-
-    <div class="col">
+    </el-col>
+    <el-col :md='8' >
       <h5>Success requests</h5>
       <request-item
         v-for='req in successRequests'
@@ -48,54 +48,25 @@
         @requestitem:retry='retry'
         @requestitem:select='showRequest' >
       </request-item>
-    </div>
+    </el-col>
+  </el-row>
 
-  </div>
+  <el-dialog
+    title='Request detail'
+    size='large'
+    :show-close='true'
+    v-model='requestDetailIsVisible' >
 
-  <!--
-  <div class='row'>
-    <div class="col">
-      <h3>Debug</h3>
-      <h5>Index:</h5>
-       <pre v-highlightjs><code class="JSON">{{index}}</code></pre>
-      <ul>
-        <li v-for='req in requests' >{{req.id}}</li>
-      </ul>
-      Loading: {{usersLoading}}
-      <ul>
-        <li v-for='user in users' >{{user.first}} {{user.last}}</li>
-      </ul>
-    </div>
-  </div>
-  -->
+      <request-detail :request='activeRequest' ></request-detail>
 
-  <!-- detail modal -->
-  <div id='req-modal' class="modal fade">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Request detail</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <request-detail :request='activeRequest' ></request-detail>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </el-dialog>
 
 </div>
 </template>
 
 <script>
-import RequestItem from './RequestItem'
-import RequestDetail from './RequestDetail'
-/* global $ */
+import RequestItem from '../RequestItem'
+import RequestDetail from '../RequestDetail'
 
 export default {
   name: 'VuexRequests',
@@ -103,7 +74,8 @@ export default {
   data () {
     return {
       resultCode: 400,
-      activeRequest: {}
+      activeRequest: {},
+      requestDetailIsVisible: false
     }
   },
   created () {
@@ -168,7 +140,7 @@ export default {
     },
     showRequest (req) {
       this.activeRequest = req
-      $('#req-modal').modal('show')
+      this.requestDetailIsVisible = true
     }
   }
 }

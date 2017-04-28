@@ -3,30 +3,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+
 import store from './store/plugin'
 Vue.config.productionTip = false
 
 import AppointmentGuruBackend from './store/backends/appointmentguru'
-let backends = [{
-  name: 'appointmentguru',
-  class: AppointmentGuruBackend
-}]
+import JSONPlaceholderBackend from './store/backends/jsonplaceholder'
+let backends = [
+  {
+    name: 'appointmentguru',
+    class: AppointmentGuruBackend
+  },
+  {
+    name: 'jsonplaceholder',
+    class: JSONPlaceholderBackend
+  }
+]
 Vue.use(store, backends)
 
 Vue.use(VueRouter)
+Vue.use(ElementUI)
 
-import DemoPage from './components/DemoPage'
-import RandomUserPage from './components/examples/RandomUserPage'
-import GithubCRUDPage from './components/examples/GithubCRUDPage'
-import BackendPage from './components/examples/BackendPage'
-
-const routes = [
-  { path: '/', component: DemoPage },
-  { path: '/randomuser', component: RandomUserPage },
-  { path: '/github', component: GithubCRUDPage },
-  { path: '/backendexample', component: BackendPage }
-]
-
+import routes from './routes'
 const router = new VueRouter({ routes })
 
 /* global hljs */
