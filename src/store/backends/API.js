@@ -1,28 +1,33 @@
 import store from '../store'
 
 class Resource {
-
   constructor (url) {
     this.url = url
   }
-
-  get (id) {}
-  list (params={}) {}
+  get (id, params = {}) {
+    let req = { url: `${this.url}/${id}`, params: params }
+    return store.dispatch('GET', req)
+  }
+  list (params = {}) {
+    let req = { url: this.url, params: params }
+    return store.dispatch('GET', req)
+  }
   save (data) {}
   update (data) {}
-  cancel () {}
-  retry () {}
+  cancel (requestId) {}
+  retry (requestId) {}
 }
 
 export default class API {
-  resource (method, resourceName, options = {}) {
-    // let url = 'https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb'
-    let req = {
+  resource (resourceName) {
+    let url = this.resources()[resourceName]
+    return new Resource(url)
+    /* let req = {
       url: this.resources()[resourceName],
       method: method
     }
     Object.assign(req, options)
-    return store.dispatch(method.toUpperCase(), req)
+    return store.dispatch(method.toUpperCase(), req) */
   }
   endpoint (method, name, options = {}) {
     // todo: throw warning if missing params

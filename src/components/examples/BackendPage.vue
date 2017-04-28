@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     fetch () {
-      this.$appointmentguru.resource('get', 'client.appointments', {id: 'foo'})
+      this.$appointmentguru.resource('client.appointments').list()
     },
     validate () {
       let options = {

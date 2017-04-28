@@ -38,3 +38,12 @@ export default class AppointmentGuruBackend extends API {
     }
   }
 }
+/*
+practitioners: {
+  name: 'Practitioners'
+  description: '..'
+  url: '/api/practitioners'
+  requiredParams: [{}, ..] // copy props from Vue
+  optionalParams: [{}, ..]
+}
+*/
