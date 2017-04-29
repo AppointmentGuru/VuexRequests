@@ -57,6 +57,7 @@ function makeRequest (commit, getters, request) {
     .catch((error) => {
       request.modified = new Date().getTime()
       request.loading = false
+      console.log(request.loading)
       if (error.response) {
         request.result = error.response
       } else {

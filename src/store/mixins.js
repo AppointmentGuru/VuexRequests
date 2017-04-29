@@ -20,6 +20,10 @@ export default {
       let r = this.getRequestById(id)
       if (r && r !== -1) { return r[key] }
       return defaultResult
+    },
+    requestIsLoading (request) {
+      if (request !== -1) { return request.loading }
+      return false
     }
   }
 }
