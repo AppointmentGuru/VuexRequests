@@ -3,10 +3,11 @@ import API from './API'
 export default class JSONPlaceholderBackend extends API {
   constructor (options = {}) {
     super()
+    this.baseUrl = 'https://jsonplaceholder.typicode.com'
   }
   resources () {
     return {
-      posts: 'https://jsonplaceholder.typicode.com/posts/',
+      posts: 'posts/',
       comments: 'comments/',
       albums: 'albums/',
       photos: 'photos/',

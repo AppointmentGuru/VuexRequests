@@ -36,19 +36,16 @@ class Resource {
     return store.dispatch('PATCH', req)
   }
   cancel (requestId) {}
-  retry (requestId) {}
+  retry (requestId) {
+    return store.dispatch('RETRY', requestId)
+  }
 }
 
 export default class API {
   resource (resourceName) {
     let url = this.resources()[resourceName]
+    if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
     return new Resource(url)
-    /* let req = {
-      url: this.resources()[resourceName],
-      method: method
-    }
-    Object.assign(req, options)
-    return store.dispatch(method.toUpperCase(), req) */
   }
   endpoint (method, name, options = {}) {
     // todo: throw warning if missing params

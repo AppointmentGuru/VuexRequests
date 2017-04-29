@@ -10,22 +10,42 @@ pre {
   background-color: #324057;
   padding: 10px;
 }
+.logo {
+  height:50px; padding-top:5px;float:left;margin-right:10px;
+}
 </style>
 <template>
 <div id="app">
   <el-menu
     theme="light"
     mode="horizontal" >
-    <el-menu-item index="1">Processing Center</el-menu-item>
+    <el-menu-item index="1">
+      <img class='logo' src='./assets/logo.png' />
+      Vuex Requests. <small>by AppointmentGuru</small>
+    </el-menu-item>
   </el-menu>
 
   <el-row >
     <el-col :md='6' >
     <el-menu theme='dark' :router='true' >
-      <el-menu-item
-        v-for='route in routes'
-        :key='route.path'
+      <template v-for='route in routes' >
+       <el-submenu v-if='route.children' :index="route.path" >
+        <template slot="title">{{route.name}}</template>
+          <template v-for='childRoute in route.children' >
+            <el-menu-item-group
+            v-if='childRoute.type === "divider"'
+            :title="childRoute.name"></el-menu-item-group>
+            <el-menu-item
+              v-else
+              :index="route.path + '/' + childRoute.path">
+                {{childRoute.name}}
+            </el-menu-item>
+          </template>
+
+      </el-submenu>
+      <el-menu-item v-else
         :index='route.path' >{{route.name}}</el-menu-item>
+      </template>
     </el-menu>
     </el-col>
     <el-col :md='18' >

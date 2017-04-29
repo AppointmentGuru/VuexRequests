@@ -6,6 +6,7 @@ export default {
   name: 'RequestStatusTag',
   props: {
     request: { required: true },
+    // you can use he sourcecodemap to overwrite the message in the tag based on the status code
     statusCodeMap: { type: Object, default: () => { return {} } }
   },
   computed: {

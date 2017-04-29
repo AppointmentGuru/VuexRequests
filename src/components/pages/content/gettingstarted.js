@@ -3,10 +3,19 @@ export const GETTING_STARTED_TEXT = `
 
 ## Installation
 
+\`\`\` JavaScript
+npm install --save git+ssh://git@github.com/AppointmentGuru/VuexRequests
+\`\`\`
+
 ## Setting up
 
+### Add it as it's own store:
+
+You can add VuexRequests as a standalone store. We provide a plugin which
+sets up the store and makes it available on \`Vue.$requeststore\`
+
 \`\`\` JavaScript
-import store from './store/plugin'
+import store from 'vuex-requests/src/store/plugin'
 Vue.use(store)
 \`\`\`
 
@@ -17,71 +26,46 @@ let req = {url: 'http://something.com'}
 this.$requeststore.dispatch('GET', req)
 \`\`\`
 
-## Making simple requests
 
-### GET
+### Add it as a module
 
-### POST
+Alternatively you can simply add the requests module to your existing Vuex store:
 
-### PUT
-
-### PATCH
-
-### DELETE
-
-## Reactive response data in the store
-
-**Examples:**
-
-* Getting data from an API
-* A CRUD example
-
-## Using backends
-
-> VuexRequests ships with a number of pre-build backends which you can use, or look at for examples
-
-**Adding a backend to your configuration:**
-
-In main.js:
+In your store:
 
 \`\`\` JavaScript
-import AppointmentGuruBackend from './store/backends/appointmentguru'
-let backends = [{
-  name: 'appointmentguru',
-  class: AppointmentGuruBackend
-}]
-Vue.use(store, backends)
+import requests from 'vuex-requests/src/store/modules/requests'
+
+export default new Vuex.Store({
+  modules: {
+    ..
+    requests: requests
+  }
+})
 \`\`\`
 
-**Using it in a component:**
+**Note:** if you take this approach, you may need to set up your backends manually
 
-\`\`\` JavaScript
-// list appointments:
-this.$appointmentguru.resource('appointment').list()
+## Create a backend
 
-// get an appointment:
-this.$appointmentguru.resource('appointments').get(id)
-
-// create a new item:
-let data = { .. }
-let requestId = this.$appointmentguru.resource('appointments').create(data)
-
-// update an appointment:
-let requestId = \`appointment-\${id}-detail\`
-this.$appointmentguru.resource('appointments').id(requestId).get(id)
-let app = this.$requeststore.getters.getRequestById(requestId).data
-app.title = 'something new'
-this.$appointmentguru.resource('appointments').id(requestId).save(id, app)
-
-\`\`\`
-
-**Examples from before, but using backends:**
-
-* Getting data from an API
-* A CRUD example
+A backend is simply a class which provides any of: resources(), endpoints() and baseUrl.
 
 
-## Writing your first backend
+## Use your backend
 
-..
+## Patterns:
+
+### Making a simple request
+
+...
+
+### Re-using a create request
+
+...
+
+### Reacting to a change in status code
+
+...
+
+
 `

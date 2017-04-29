@@ -4,11 +4,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import ElementUI from 'element-ui'
+import VueScrollTo from 'vue-scrollto'
+
 import 'element-ui/lib/theme-default/index.css'
 
-import store from './store/plugin'
 Vue.config.productionTip = false
 
+import store from './store/plugin'
 import AppointmentGuruBackend from './store/backends/appointmentguru'
 import JSONPlaceholderBackend from './store/backends/jsonplaceholder'
 let backends = [
@@ -23,6 +25,7 @@ let backends = [
 ]
 Vue.use(store, backends)
 
+Vue.use(VueScrollTo)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 

@@ -10,6 +10,9 @@ import { GET, POST, PUT, PATCH, DELETE, RETRY } from '../actions'
 
 export default {
   state: {
+    config: {
+      backends: {}
+    },
     requests: [],
     index: {}
   },
