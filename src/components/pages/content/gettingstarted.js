@@ -50,22 +50,48 @@ export default new Vuex.Store({
 
 A backend is simply a class which provides any of: resources(), endpoints() and baseUrl.
 
+Here is an example backend for [randomuser.me](http://randomuser.me):
+
+\`\`\` JavaScript
+import API from 'vuex-requests/src/store/backends/API'
+
+export default class AppointmentGuruBackend extends API {
+  constructor (options = {}) {
+    super()
+    // ideally you should use a config var for the api root:
+    // this.baseUrl = process.env.APPOINTMENTGURU_API_ROOT
+    this.baseUrl = 'https://randomuser.me'
+  }
+  resources () {
+    return {
+      randomuser: 'api'
+    }
+  }
+}
+\`\`\`
 
 ## Use your backend
 
-## Patterns:
+### Add your backend to <code>Vue</code>
 
-### Making a simple request
+**main.js**
 
-...
+\`\`\` JavaScript
+import RandomUserAPI from './mybackends/randomuser'
+Vue.prototype.$randomuser = RandomUserAPI()
+\`\`\`
 
-### Re-using a create request
+**Now, in your components you can use this like so:**
 
-...
+\`\`\` JavaScript
+this.$randomuser.resource('randomuser').list()
+\`\`\`
 
-### Reacting to a change in status code
+## Further examples:
 
-...
-
+* Making a simple request
+* a CRUD example
+* Reacting to status code change
+* Dealing with errors
 
 `
