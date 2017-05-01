@@ -17,6 +17,26 @@ export default {
     index: {}
   },
   mutations: {
+    ['BACKEND_CONFIG_INIT'] (state, backendName) {
+      let config = {
+        headers: {}
+      }
+      Vue.set(state.config.backends, backendName, config)
+    },
+    ['BACKEND_CONFIG_SET_HEADERS'] (state, backendHeaders) {
+       // [backendName, headers]
+      let backend = backendHeaders[0]
+      let headers = backendHeaders[1]
+      Vue.set(state.config.backends[backend], 'headers', headers)
+    },
+    ['BACKEND_CONFIG_SET_HEADER'] (state, backendKeyValue) {
+      // [backend, key, value]
+      let backend = backendKeyValue[0]
+      let key = backendKeyValue[1]
+      let value = backendKeyValue[2]
+      let headers = state.config.backends[backend].headers
+      Vue.set(headers, key, value)
+    },
     ['UPDATE_REQUEST'] (state, request) {
       let index = state.index[request.id]
       Vue.set(state.requests, index, request)
@@ -35,6 +55,9 @@ export default {
     GET, POST, PUT, PATCH, DELETE, RETRY
   },
   getters: {
+    getBackendConfig: (state) => (backendName) => {
+      return state.config.backends[backendName] || {}
+    },
     getRequestById: (state, getters) => (id) => {
       if (id in state.index) {
         let index = state.index[id]

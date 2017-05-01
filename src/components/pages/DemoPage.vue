@@ -10,44 +10,48 @@
   <div class='line' ></div>
   <el-row >
     <el-col :md='8' >
-
-      <h5>In progress</h5>
-      <template v-for='req in inprogressRequests' >
-        <request-item :request='req' ></request-item>
-        <button @click='retry(req.id)' >Cancel</button>
-      </template>
+      <el-card class='margin compact' >
+        <h5>In progress</h5>
+        <template v-for='req in inprogressRequests' >
+          <request-item :request='req' ></request-item>
+          <button @click='retry(req.id)' >Cancel</button>
+        </template>
+      </el-card>
     </el-col>
     <el-col :md='8' >
-      <h5>Error requests</h5>
+      <el-card class='margin compact' >
+        <h5>Error requests</h5>
 
-      <strong>Client errors (4xx)</strong>
-      <request-item
-        v-for='req in clientErrorRequests'
-        :key='req.id'
-        :request='req'
-        @requestitem:retry='retry'
-      @requestitem:select='showRequest' >
-      </request-item>
-
-      <strong>Server errors (5xx)</strong>
-      <request-item
-        v-for='req in serverErrorRequests'
-        :key='req.id'
-        :request='req'
-        @requestitem:retry='retry'
+        <strong>Client errors (4xx)</strong>
+        <request-item
+          v-for='req in clientErrorRequests'
+          :key='req.id'
+          :request='req'
+          @requestitem:retry='retry'
         @requestitem:select='showRequest' >
-      </request-item>
+        </request-item>
 
+        <strong>Server errors (5xx)</strong>
+        <request-item
+          v-for='req in serverErrorRequests'
+          :key='req.id'
+          :request='req'
+          @requestitem:retry='retry'
+          @requestitem:select='showRequest' >
+        </request-item>
+      </el-card>
     </el-col>
     <el-col :md='8' >
-      <h5>Success requests</h5>
-      <request-item
-        v-for='req in successRequests'
-        :key='req.id'
-        :request='req'
-        @requestitem:retry='retry'
-        @requestitem:select='showRequest' >
-      </request-item>
+      <el-card class='margin compact' >
+        <h5>Success requests</h5>
+        <request-item
+          v-for='req in successRequests'
+          :key='req.id'
+          :request='req'
+          @requestitem:retry='retry'
+          @requestitem:select='showRequest' >
+        </request-item>
+      </el-card>
     </el-col>
   </el-row>
 

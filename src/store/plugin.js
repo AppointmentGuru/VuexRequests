@@ -6,8 +6,7 @@ export default {
   install (Vue, options) {
     Vue.prototype.$requeststore = store
     for (let backend of options) {
-      console.log(backend.name)
-      Vue.prototype['$' + backend.name] = new backend['class']()
+      Vue.prototype['$' + backend.name] = new backend['class'](backend.name)
     }
   }
 }

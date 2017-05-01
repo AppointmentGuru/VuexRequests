@@ -78,7 +78,7 @@ export default class AppointmentGuruBackend extends API {
 
 \`\`\` JavaScript
 import RandomUserAPI from './mybackends/randomuser'
-Vue.prototype.$randomuser = RandomUserAPI()
+Vue.prototype.$randomuser = new RandomUserAPI()
 \`\`\`
 
 **Now, in your components you can use this like so:**

@@ -1,8 +1,8 @@
 import API from './API'
 
 export default class JSONPlaceholderBackend extends API {
-  constructor (options = {}) {
-    super()
+  constructor (name = 'jsonplaceholder', options = {}) {
+    super(name)
     this.baseUrl = 'https://jsonplaceholder.typicode.com'
   }
   resources () {
