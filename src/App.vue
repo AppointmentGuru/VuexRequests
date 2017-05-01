@@ -13,6 +13,17 @@ pre {
 .logo {
   height:50px; padding-top:5px;float:left;margin-right:10px;
 }
+.pull-right {
+  float:right;;
+}
+.el-card {
+  border-radius: 0px !important;
+}
+.el-card.compact .el-card__body {
+  padding:10px !important;
+}
+.padd { padding: 10px; }
+.margin { margin: 10px; }
 </style>
 <template>
 <div id="app">

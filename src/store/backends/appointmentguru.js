@@ -2,11 +2,10 @@
 import API from './API'
 
 export default class AppointmentGuruBackend extends API {
-  constructor (options = {}) {
-    super()
+  constructor (name = 'appointmentguru', options = {}) {
+    super(name)
     this.baseUrl = process.env.APPOINTMENTGURU_API_ROOT
-    let headers = { 'Content-Type': 'application/json' }
-    if (options.token) { headers['Authorization'] = 'Token ' + options.token }
+    this.headers = { 'Content-Type': 'application/json' }
   }
   endpoints () { // endpoints are simple GET only requests
     return {
@@ -20,10 +19,11 @@ export default class AppointmentGuruBackend extends API {
   resources () { // resource endpoints support standard RESTful CRUD interface
     return {
       login: 'api/auth/login',
-      practitioners: 'api/practitioners',
-      'client.appointments': '/api/v2/client/appointments/',
+      'client.practitioners': 'api/client/practitioners/',
+      'client.appointments': 'api/v2/client/appointments/',
       appointment: 'api/appointments', // v1: use for create
-      appointments: 'api/v2/client/appointments' // v2: use for get
+      appointments: 'api/v2/client/appointments', // v2: use for get
+      'practitioner.me': 'api/v2/practitioner/me/'
     }
   }
 }
