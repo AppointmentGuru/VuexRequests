@@ -17,7 +17,11 @@ class Resource {
     return req
   }
   __detailUrl (id) {
-    return `${this.url}/${id}`
+    let url = this.url
+    if (url.endsWith('/')) { // remove trailing slash
+      url = url.substr(0, url.length - 1)
+    }
+    return `${url}/${id}/`
   }
   __addDefaultTags (req, action) {
     let tags = [`${this.name}-${action}`]
@@ -71,13 +75,16 @@ export default class API {
 
     return new Resource(resourceName, url, this.headers)
   }
-  endpoint (method, name, options = {}) {
-    // todo: throw warning if missing params
+  endpoint (name, options = {}) {
+    let endpoint = this.endpoints()[name]
+    let method = endpoint.method
+    let url = endpoint.url
+    if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
+
     let req = {
-      url: this.endpoints()[name].url,
+      url: url,
       method: method
     }
-    if (this.id) { req.id = this.id }
     Object.assign(req, options)
     return store.dispatch(method.toUpperCase(), req)
   }

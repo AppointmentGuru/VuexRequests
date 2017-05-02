@@ -24,6 +24,20 @@ pre {
 }
 .padd { padding: 10px; }
 .margin { margin: 10px; }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+/* not working .. :^/; */
+.slide-enter-active, .slide-leave-active {
+  transition: height 5s
+}
+.slide-enter, .slide-leave-to /* .slide-leave-active in <2.1.8 */ {
+  height:0px;
+}
 </style>
 <template>
 <div id="app">

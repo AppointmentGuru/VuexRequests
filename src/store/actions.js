@@ -27,6 +27,7 @@ function prepareRequest (method, request) {
   request.result = { status: 0 }
   request.method = method
   request.loading = true
+  request.status = 0
   request.modified = new Date().getTime()
   return request
 }
@@ -51,13 +52,14 @@ function makeRequest (commit, getters, request) {
     .then((result) => {
       request.modified = new Date().getTime()
       request.loading = false
+      request.status = result.status
       request.result = result
       commit('UPDATE_REQUEST', request)
     })
     .catch((error) => {
       request.modified = new Date().getTime()
       request.loading = false
-      console.log(request.loading)
+      request.status = 500
       if (error.response) {
         request.result = error.response
       } else {
@@ -69,6 +71,8 @@ function makeRequest (commit, getters, request) {
       if (!request.result.status) {
         request.result.status = 500
         request.result.statusText = error.toString()
+      } else {
+        request.status = request.result.status
       }
       commit('UPDATE_REQUEST', request)
     })
