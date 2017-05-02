@@ -8,6 +8,7 @@ import BlogPage from './components/pages/backends/examples/BlogPage'
 import ConfigExamplePage from './components/pages/backends/examples/ConfigExamplePage'
 import AppointmentGuruDocs from './components/pages/backends/docs/AppointmentGuruDocs'
 
+import Temp from './components/pages/backends/examples/Temp'
 export default [
   { path: '/', component: GettingStarted, name: 'Getting Started' },
   { path: '/docs', component: DocsPage, name: 'Documentation' },
@@ -25,6 +26,7 @@ export default [
     name: 'Backends',
     children: [
       { type: 'divider', path: '/', name: 'Usage' },
+      { path: 'examples/whoami', component: Temp, name: 'WhoAmI' },
       { path: 'examples/blog', component: BlogPage, name: 'Blog' },
       { path: 'examples/config', component: ConfigExamplePage, name: 'Config' },
       { type: 'divider', path: '/', name: 'Available backends' },
