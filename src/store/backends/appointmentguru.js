@@ -22,6 +22,15 @@ export default class AppointmentGuruBackend extends API {
           otp: { type: 'number', required: true }
         }
       },
+      'auth-set-password': {
+        url: 'api/auth/set-password/',
+        method: 'POST',
+        requiresAuth: true,
+        params: {
+          phone_number: { type: 'number', required: true },
+          otp: { type: 'number', required: true }
+        }
+      },
       'auth-login-phone': {
         url: 'api/auth/phone/token/',
         method: 'POST',
@@ -29,12 +38,29 @@ export default class AppointmentGuruBackend extends API {
           phone_number: { type: 'number', required: true },
           password: { type: 'string', required: true }
         }
+      },
+      'auth-register': {
+        url: 'api/auth/register/',
+        method: 'POST',
+        params: {
+          full_name: { type: 'strong', required: true },
+          email: { type: 'email', required: true },
+          phone_number: { type: 'number', required: true },
+          password1: { type: 'string', required: true },
+          password2: { type: 'string', required: true }
+        }
+      },
+      'me': {
+        url: 'api/users/me/',
+        method: 'PATCH',
+        params: {}
       }
     }
   }
   resources () { // resource endpoints support standard RESTful CRUD interface
     return {
       login: 'api/auth/login',
+      'users': 'api/users/',
       'client.practitioners': 'api/client/practitioners/',
       'client.appointments': 'api/v2/client/appointments/',
       appointment: 'api/appointments', // v1: use for create
