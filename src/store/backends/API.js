@@ -70,9 +70,7 @@ export default class API {
   resource (resourceName) {
     let url = this.resources()[resourceName]
     if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
-
     Object.assign(this.headers, store.getters.getBackendConfig(this.name).headers)
-
     return new Resource(resourceName, url, this.headers)
   }
   endpoint (name, options = {}) {
@@ -81,9 +79,13 @@ export default class API {
     let url = endpoint.url
     if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
 
+    if (endpoint.requiresAuth) {
+      Object.assign(this.headers, store.getters.getBackendConfig(this.name).headers)
+    }
     let req = {
       url: url,
-      method: method
+      method: method,
+      headers: this.headers
     }
     Object.assign(req, options)
     return store.dispatch(method.toUpperCase(), req)
