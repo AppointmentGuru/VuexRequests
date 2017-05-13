@@ -6,6 +6,8 @@
 
 **Install**
 
+npm install --save git+ssh://git@github.com/AppointmentGuru/VuexRequests.git
+
 **Notes:**
 
 * This is a Vue 2 module
