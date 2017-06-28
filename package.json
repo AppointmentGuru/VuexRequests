@@ -132,5 +132,5 @@
     "test": "npm run unit",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"
   },
-  "version": "0.0.2"
+  "version": "1.0.0"
 }
