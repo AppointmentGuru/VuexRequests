@@ -22,6 +22,14 @@ export default class AppointmentGuruBackend extends API {
           otp: { type: 'number', required: true }
         }
       },
+      'auth-forgot-password': {
+        url: 'api/auth/forgot-password/',
+        method: 'POST',
+        requiresAuth: false,
+        params: {
+          phone_number: { type: 'number', required: true }
+        }
+      },
       'auth-set-password': {
         url: 'api/auth/set-password/',
         method: 'POST',
@@ -62,9 +70,10 @@ export default class AppointmentGuruBackend extends API {
       login: 'api/auth/login',
       'users': 'api/users/',
       'client.practitioners': 'api/client/practitioners/',
-      'client.appointments': 'api/v2/client/appointments/',
-      appointment: 'api/appointments', // v1: use for create
-      appointments: 'api/v2/client/appointments', // v2: use for get
+      'client.appointments': 'api/client/appointments/',
+      'client.v2.appointments': 'api/v2/client/appointments/',
+      appointment: 'api/appointments/', // v1: use for create
+      appointments: 'api/v2/client/appointments/', // v2: use for get
       'practitioner.me': 'api/v2/practitioner/me/',
       'practitioner.me.profile': 'api/v2/practitioner/me/profile/'
     }

@@ -6,7 +6,7 @@
 
 **Install**
 
-npm install --save git+ssh://git@github.com/AppointmentGuru/VuexRequests.git
+npm install --save https://components.appointmentguru.co/vuex-requests/vuex-requests-{version}.tgz
 
 **Notes:**
 
