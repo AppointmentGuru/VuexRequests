@@ -2,9 +2,11 @@
 import API from './API'
 
 export default class AppointmentGuruBackend extends API {
-  constructor (name = 'appointmentguru', options = {}) {
-    super(name)
+  constructor (name = 'appointmentguru', store, options = {}) {
+    super(name, store)
+    this.store = store
     this.baseUrl = process.env.APPOINTMENTGURU_API_ROOT
+    console.log(this.baseUrl)
     this.headers = { 'Content-Type': 'application/json' }
   }
   endpoints () { // endpoints are simple GET only requests
@@ -74,8 +76,11 @@ export default class AppointmentGuruBackend extends API {
       'client.v2.appointments': 'api/v2/client/appointments/',
       appointment: 'api/appointments/', // v1: use for create
       appointments: 'api/v2/client/appointments/', // v2: use for get
+      'practitioner.appointments.clashes': '/api/appointments/clashes/',
       'practitioner.me': 'api/v2/practitioner/me/',
-      'practitioner.me.profile': 'api/v2/practitioner/me/profile/'
+      'practitioner.me.profile': 'api/v2/practitioner/me/profile/',
+      'practitioner.appointments': 'api/appointments/',
+      'practitioner.clients': 'api/v2/practitioner/clients/'
     }
   }
 }

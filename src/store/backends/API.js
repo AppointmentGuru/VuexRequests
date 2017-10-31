@@ -1,8 +1,9 @@
-import store from '../store'
+// import store from '../store'
 
 class Resource {
-  constructor (name, url, headers = {}) {
+  constructor (name, store, url, headers = {}) {
     this.name = name
+    this.store = store
     this.url = url
     this.headers = headers
   }
@@ -35,43 +36,51 @@ class Resource {
   list (params = {}, tags = []) {
     let req = this.__getRequest(this.url, {params})
     this.__addDefaultTags(req, 'list')
-    return store.dispatch('GET', req)
+    return this.store.dispatch('GET', req)
   }
   create (data, tags = []) {
     let req = this.__getRequest(this.url, {data, tags})
     this.__addDefaultTags(req, 'create')
-    return store.dispatch('POST', req)
+    return this.store.dispatch('POST', req)
   }
   get (id, params = {}) {
     let url = this.__detailUrl(id)
     let req = this.__getRequest(url, {params})
     this.__addDefaultTags(req, `get-${id}`)
 
-    return store.dispatch('GET', req)
+    return this.store.dispatch('GET', req)
   }
-  save (id, data, tags = []) {
+  save (id, data, tags = [], params = {}) {
     let url = this.__detailUrl(id)
-    let req = this.__getRequest(url, {data, tags})
+    let req = this.__getRequest(url, {data, tags, params})
     this.__addDefaultTags(req, `save-${id}`)
 
-    return store.dispatch('PATCH', req)
+    return this.store.dispatch('PATCH', req)
+  }
+  delete (id, params = {}, tags) {
+    let url = this.__detailUrl(id)
+    let req = this.__getRequest(url, {params, tags})
+    this.__addDefaultTags(req, `delete-${id}`)
+
+    return this.store.dispatch('DELETE', req)
   }
   cancel (requestId) {}
   retry (requestId) {
-    return store.dispatch('RETRY', requestId)
+    return this.store.dispatch('RETRY', requestId)
   }
 }
 
 export default class API {
-  constructor (name, options = {}) {
+  constructor (name, store, options = {}) {
     this.name = name
-    store.commit('BACKEND_CONFIG_INIT', name)
+    this.store = store
+    this.store.commit('BACKEND_CONFIG_INIT', name)
   }
   resource (resourceName) {
     let url = this.resources()[resourceName]
     if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
-    Object.assign(this.headers, store.getters.getBackendConfig(this.name).headers)
-    return new Resource(resourceName, url, this.headers)
+    Object.assign(this.headers, this.store.getters.getBackendConfig(this.name).headers)
+    return new Resource(resourceName, this.store, url, this.headers)
   }
   endpoint (name, options = {}) {
     let endpoint = this.endpoints()[name]
@@ -80,7 +89,7 @@ export default class API {
     if (this.baseUrl) { url = `${this.baseUrl}/${url}` }
 
     if (endpoint.requiresAuth) {
-      Object.assign(this.headers, store.getters.getBackendConfig(this.name).headers)
+      Object.assign(this.headers, this.store.getters.getBackendConfig(this.name).headers)
     }
     let req = {
       url: url,
@@ -88,7 +97,7 @@ export default class API {
       headers: this.headers
     }
     Object.assign(req, options)
-    return store.dispatch(method.toUpperCase(), req)
+    return this.store.dispatch(method.toUpperCase(), req)
   }
   resources () {}
   endpoints () {}

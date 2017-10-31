@@ -73,11 +73,18 @@ export default {
     getBackendConfig: (state) => (backendName) => {
       return state.config.backends[backendName] || {}
     },
-    getRequestById: (state, getters) => (id) => {
+    getRequestById: (state, getters) => (id, defaultResponse) => {
       if (id in state.index) {
         let index = state.index[id]
         return state.requests[index]
       } else {
+        if (defaultResponse === true){
+          return {
+            loading: false,
+            status: -1,
+            requestExists: false
+          }
+        }
         return -1
       }
     },
