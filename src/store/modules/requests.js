@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import { GET, POST, PUT, PATCH, DELETE, RETRY } from '../actions'
-/* eslint-disable no-useless-computed-key */
-
+import {
+  BACKEND_CONFIG_INIT,
+  BACKEND_CONFIG_SET_HEADERS,
+  BACKEND_CONFIG_REMOVE_HEADER,
+  BACKEND_CONFIG_SET_HEADER,
+  UPDATE_REQUEST,
+  PUSH_REQUEST,
+  REMOVE_REQUEST
+} from '../mutations'
 /*
  if there's an error:
  500 -> retry
@@ -17,19 +24,27 @@ export default {
     index: {}
   },
   mutations: {
-    ['BACKEND_CONFIG_INIT'] (state, backendName) {
+    [BACKEND_CONFIG_INIT] (state, backendName) {
       let config = {
         headers: {}
       }
       Vue.set(state.config.backends, backendName, config)
     },
-    ['BACKEND_CONFIG_SET_HEADERS'] (state, backendHeaders) {
+    [BACKEND_CONFIG_SET_HEADERS] (state, backendHeaders) {
        // [backendName, headers]
       let backend = backendHeaders[0]
       let headers = backendHeaders[1]
       Vue.set(state.config.backends[backend], 'headers', headers)
     },
-    ['BACKEND_CONFIG_SET_HEADER'] (state, backendKeyValue) {
+    [BACKEND_CONFIG_REMOVE_HEADER] (state, backendKey) {
+      // usage: commit('BACKEND_CONFIG_REMOVE_HEADER', ['appointmentguru','Authorization'])
+      // [backend, key]
+      let backend = backendKey[0]
+      let key = backendKey[1]
+      let headers = state.config.backends[backend].headers
+      Vue.delete(headers, key)
+    },
+    [BACKEND_CONFIG_SET_HEADER] (state, backendKeyValue) {
       // [backend, key, value]
       let backend = backendKeyValue[0]
       let key = backendKeyValue[1]
@@ -37,17 +52,17 @@ export default {
       let headers = state.config.backends[backend].headers
       Vue.set(headers, key, value)
     },
-    ['UPDATE_REQUEST'] (state, request) {
+    [UPDATE_REQUEST] (state, request) {
       let index = state.index[request.id]
       Vue.set(state.requests, index, request)
     },
-    ['PUSH_REQUEST'] (state, request) {
+    [PUSH_REQUEST] (state, request) {
       state.requests.push(request)
       let index = (state.requests.length - 1)
       Vue.set(state.index, request.id, index)
       // state.index[request.id] = (state.requests.length - 1)
     },
-    ['REMOVE_REQUEST'] (state, requestId) {
+    [REMOVE_REQUEST] (state, requestId) {
       console.log(`remove request: ${requestId}`)
     }
   },
@@ -58,11 +73,18 @@ export default {
     getBackendConfig: (state) => (backendName) => {
       return state.config.backends[backendName] || {}
     },
-    getRequestById: (state, getters) => (id) => {
+    getRequestById: (state, getters) => (id, defaultResponse) => {
       if (id in state.index) {
         let index = state.index[id]
         return state.requests[index]
       } else {
+        if (defaultResponse === true){
+          return {
+            loading: false,
+            status: -1,
+            requestExists: false
+          }
+        }
         return -1
       }
     },

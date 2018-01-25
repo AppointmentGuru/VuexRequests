@@ -111,10 +111,12 @@ export const DELETE = ({ commit, getters }, request) => {
 export const RETRY = ({ getters, commit }, requestId) => {
   let request = getters.getRequestById(requestId)
   if (request !== -1) {
-    request.result.status = 0  // retrying / in progress
-    request.loading = true
-    commit('UPDATE_REQUEST', request)
-    makeRequest(commit, getters, request)
+    if (request.result.status > 0) { // only retry if not a request in progress
+      request.result.status = 0  // retrying / in progress
+      request.loading = true
+      commit('UPDATE_REQUEST', request)
+      makeRequest(commit, getters, request)
+    }
   }
 }
 

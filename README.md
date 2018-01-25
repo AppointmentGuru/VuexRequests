@@ -6,7 +6,177 @@
 
 **Install**
 
-npm install --save git+ssh://git@github.com/AppointmentGuru/VuexRequests.git
+```
+nom install --save http://components.appointmentguru.co/vuex-requests/vuex-requests-1.0.0.tgz
+```
+
+**Setup**
+
+**Setup your vuex store**
+
+in main.js:
+
+```
+// import store:
+import store from './store'
+...
+
+// inject it into your app:
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
+})
+```
+
+Now you can access `this.$store` in your app
+
+**Add to the requests module to your vuex store**
+
+in store `store/index.js`:
+
+```
+import Vue from 'vue'
+import Vuex from 'vuex'
+import requests from 'vuex-requests/src/store/modules/requests'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  modules: {
+    requests: requests
+  }
+})
+
+```
+
+**Setup your backends:**
+
+We'll setup the `randomuser.me` API as a backend:
+
+Create a mixin: `mixins/api.js`
+
+```
+import API from 'vuex-requests/src/store/backends/API'
+
+export default {
+  name: 'APIMixin',
+  data () {
+    return {
+	}
+  }
+}
+```
+
+You'll need this .. don't worry too much about what it does:
+
+```
+  ...
+  methods: {
+    getAPI (name) {
+      let api = new API(name, this.$store)
+      api.baseUrl = process.env[`${name.toUpperCase()}_URL`]
+      api.headers = { 'Content-Type': 'application/json' }
+      api.resources = () => { return this[name].resources }
+      return api
+    }
+  }
+  ...
+```
+
+Now, we configure our API:
+
+```
+  data () {
+    return {
+      randomuserservice: {
+        resources: {
+          users: 'api/'
+        }
+      }
+    }
+  },
+```
+
+The resources lookup is a key value of a lookup (`users`), and a path endpoint: `api/`
+
+Finally, we make it available to our components: 
+
+```
+  computed: {
+    $randomuserservice () {
+      return this.getAPI('randomuserservice')
+    }
+  }
+```
+
+Now you can make requests like so: 
+
+```
+// GET /users/
+this.$randomuserservice.resource('users').id('user-request').list()
+// GET /users/:id
+this.$randomuserservice.resource('users').id('user-request').list(id)
+// POST /users/
+this.$randomuserservice.resource('users').id('user-request').create(data)
+// PATCH /users/
+this.$randomuserservice.resource('users').id('user-request').save(id, data)
+```
+
+**Final version of mixins/api:**
+
+```
+import API from 'vuex-requests/src/store/backends/API'
+
+export default {
+  name: 'APIMixin',
+  data () {
+    return {
+      randomuserservice: {
+        resources: {
+          users: 'api/'
+        }
+      }
+    }
+  },
+  methods: {
+    getAPI (name) {
+      let api = new API(name, this.$store)
+      api.baseUrl = process.env[`${name.toUpperCase()}_URL`]
+      api.headers = { 'Content-Type': 'application/json' }
+      api.resources = () => { return this[name].resources }
+      return api
+    }
+  },
+  computed: {
+    $randomuserservice () {
+      return this.getAPI('randomuserservice')
+    }
+  }
+}
+
+```
+
+Add the mixin globally: 
+
+in `main.js`
+
+
+```
+import APIMixin from './mixins/api'
+
+...
+Vue.mixin(APIMixin)
+```
+
+### An example:
+
+```
+
+```
 
 **Notes:**
 
@@ -15,36 +185,6 @@ npm install --save git+ssh://git@github.com/AppointmentGuru/VuexRequests.git
 
 **Setting up**
 
-There are a couple of options for setting this up.
-
-**1. Add the store as a plugin (recommended)**
-
-...
-
-**2. Add the store as a module to your existing Vuex store**
-
-**Usage**
-
-Making a request is as simple as:
-
-```
-let req = {
-  url: url,
-  id: 'get_random_users'
-}
-let id = this.$requeststore.dispatch('GET', req)
-```
-
-## Backends
-
-VuexRequests comes with some predefined backends which make it easy for you to interact with various APIs.
-
-
-### Using backends
-
-You can also define your own backends.
-
-#### Creating a custom
 
 ## Develop / contribute
 

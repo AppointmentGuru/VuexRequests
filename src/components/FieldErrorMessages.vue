@@ -13,7 +13,7 @@ export default {
   props: {
     request: { required: true },
     field: { required: true, type: String },
-    errorClass: { type: String, default: 'error'}
+    errorClass: { type: String, default: 'error' }
   },
   computed: {
     errors () {

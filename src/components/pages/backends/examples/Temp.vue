@@ -11,8 +11,6 @@
     <practitioner-practice v-else key='practitioner-practice' >
     </practitioner-practice>
   </transition>
-
-
 </div>
 <!--
 * Who are you / create account
