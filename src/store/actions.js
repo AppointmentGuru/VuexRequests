@@ -24,7 +24,11 @@ e.g. tags: ['create_widget', 'widget_page', 'origin:some_place']
 */
 function prepareRequest (method, request) {
   if (!request.id) { request.id = id() }
-  request.result = { status: 0 }
+  if (request.result) {
+    request.result.status = 0
+  } else {
+    request.result = { status: 0 }
+  }
   request.method = method
   request.loading = true
   request.status = 0
@@ -79,6 +83,12 @@ function makeRequest (commit, getters, request) {
 }
 
 export const GET = ({ commit, getters }, request) => {
+  let originalRequest = getters.getRequestById(request.id)
+  let originalRequestExists = (originalRequest !== -1)
+  if (originalRequestExists) {
+    request.result = originalRequest.result
+  }
+
   request = prepareRequest('get', request)
   makeRequest(commit, getters, request)
   return request.id
